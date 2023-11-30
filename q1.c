@@ -1,5 +1,7 @@
 #include "function.h"
 
+#include "function.h" // Make sure to include your necessary header files
+
 void welcome() {
     write(STDOUT_FILENO, welcome_msg, strlen(welcome_msg));
     write(STDOUT_FILENO, exit_instruction, strlen(exit_instruction));
@@ -9,7 +11,6 @@ void welcome() {
 int main(void) {
     char command[MAXSIZE];
     int numberOfChar;
-    int status;
 
     while (1) {
         welcome();
