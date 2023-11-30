@@ -18,11 +18,17 @@ int main(void) {
         numberOfChar = read(STDIN_FILENO, command, MAXSIZE);
         command[numberOfChar - 1] = '\0';
 
+        if (strlen(command) == 0) {
+            write(STDOUT_FILENO, empty_msg, strlen(empty_msg));
+            write(STDOUT_FILENO, msg_enseash, strlen(msg_enseash));
+            continue;
+        }
         // Exit if the user types 'exit'
         if (strcmp(command, "exit") == 0) {
             write(STDOUT_FILENO, exit_msg, strlen(exit_msg));
             break;
         }
+
 
         pid_t ret = fork();
 
@@ -45,6 +51,5 @@ int main(void) {
             }
         }
     }
-
     return 0;
 }
