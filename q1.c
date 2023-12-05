@@ -1,5 +1,3 @@
-#include "function.h"
-
 #include "function.h" // Make sure to include your necessary header files
 
 void welcome() {

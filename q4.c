@@ -10,6 +10,7 @@ int main(void) {
     char command[MAXSIZE];
     int numberOfChar;
     int status;
+    char buff[MAXSIZE];
 
     welcome();
 
@@ -18,14 +19,15 @@ int main(void) {
         numberOfChar = read(STDIN_FILENO, command, MAXSIZE);
         command[numberOfChar - 1] = '\0';
 
-        if (strlen(command) == 0) {
-            write(STDOUT_FILENO, empty_msg, strlen(empty_msg));
-            write(STDOUT_FILENO, msg_enseash, strlen(msg_enseash));
-            continue;
-        }
         // Exit if the user types 'exit'
         if (strcmp(command, "exit") == 0) {
             write(STDOUT_FILENO, exit_msg, strlen(exit_msg));
+            break;
+        }
+
+        // exit when user type ctrl+D
+        if (numberOfChar == 0 || (numberOfChar == 1 && command[0] == '\n')) {
+            write(STDOUT_FILENO, "Goodbye!\n", strlen("Goodbye!\n"));
             break;
         }
 
@@ -44,11 +46,21 @@ int main(void) {
 
             // Check if the process terminated normally
             if (WIFEXITED(status)) {
-                write(STDOUT_FILENO, msg_enseash, strlen(msg_enseash));
-            } else {
-                write(STDOUT_FILENO, "Child process did not terminate normally.\n", strlen("Child process did not terminate normally.\n"));
+                sprintf(buff,"[Code exit : %d] ", WEXITSTATUS(status));
+                write(STDOUT_FILENO,ensea, strlen(ensea));
+                write(STDOUT_FILENO, buff, strlen(buff));
+                write(STDOUT_FILENO, percent, strlen(percent));
+            } else if (WIFSIGNALED(status)){
+                sprintf(buff,"[Sign : %d] ", WEXITSTATUS(status));
+                write(STDOUT_FILENO,ensea, strlen(ensea));
+                write(STDOUT_FILENO, buff, strlen(buff));
+                write(STDOUT_FILENO, percent, strlen(percent));
             }
         }
     }
-    return 0 ;
+
+    return 0;
 }
+
+
+
