@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
-
+#include <time.h>
 // Define
 
 #define welcome_msg "Bienvenue dans le Shell ENSEA.\n"
