@@ -1,3 +1,11 @@
 # TP_Synth-se_PILLOT_LABOURE
 
-Q1 :
+Q1 : The goal of this first question is to create a simple prompt that awaits a command input after displaying a welcome message. To display this welcome message easily, we define macros for all our messages in our .h file; this allows us to use the write() function much more quickly. After calling our welcome() function, we create the loop allowing the shell to wait for a command. The read() function reads the user's input, and then we add a comparison condition between our command and the string "exit"  to determine when to exit the loop. If this condition is not met, our program returns an error message and goes back to waiting.
+
+Q2 : We now want our shell to be able to execute a simple command (without arguments) and go back to waiting once it is finished. We take care to create a child process for each command so that each of them is executed in this process, and not in the parent process, which is responsible for displaying the command prompt's waiting message once the child has successfully terminated.
+
+Q3 : Our previous programs already handle the exit command, and we are adding support for the Ctrl + D command. When this key combination is pressed, no characters are added, so the exit condition used is the comparison of the number of characters in the command with 0.
+
+Q4 : To retrieve the exit codes of our programs, we have to focus on the value of "status" returned by WEXITSTATUS() and WIFEXITED(). Don't forget to convert this value to a string using sprintf to be able to display it using write(). We also had to make a few small modifications to the displayed messages to achieve the desired output.
+
+Q5 : We are now focusing on the duration of the programs executed by our shell, specifically the execution time of the child process. To achieve this, we are using the clock_gettime system call. After reading the manual for this call, we have defined two timespec structures, start and end, and we are using the times recorded in seconds and nanoseconds. To display the time effectively, we have implemented a loop that shows the time in milliseconds as long as it is less than 1 second. We take care to convert our long-type variables to strings using snprintf to use them in the write() function.
