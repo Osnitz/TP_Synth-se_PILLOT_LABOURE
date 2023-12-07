@@ -20,4 +20,5 @@
 
 // Function
 void welcome();
-void display_time_and_exitCode(int status, char *buff_exit,char *buff_time);
+void display_execTime_exitCode_prompt(int status, char *buff_exit,char *buff_time,struct timespec start, struct timespec end);
+void exec_complex_command(char command[]);

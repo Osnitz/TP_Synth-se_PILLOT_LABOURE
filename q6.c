@@ -1,12 +1,6 @@
 #include "function.h"
 
-void welcome() {
-    write(STDOUT_FILENO, welcome_msg, strlen(welcome_msg));
-    write(STDOUT_FILENO, exit_instruction, strlen(exit_instruction));
-    write(STDOUT_FILENO, msg_enseash, strlen(msg_enseash));
-}
-
-void display_execTime_exitCode_prompt(int status, char *buff_exit,char *buff_time,struct timespec start, struct timespec end){
+/*void display_execTime_exitCode_prompt(int status, char *buff_exit,char *buff_time,struct timespec start, struct timespec end){
     //Computing the program's duration
     long time_seconds = end.tv_sec - start.tv_sec;
     long time_nanoseconds = end.tv_nsec - start.tv_nsec;
@@ -30,7 +24,23 @@ void display_execTime_exitCode_prompt(int status, char *buff_exit,char *buff_tim
             write(STDOUT_FILENO, buff_exit, strlen(buff_exit));
             write(STDOUT_FILENO, percent, strlen(percent));
         }
-}
+}*/
+
+/*void exec_complex_command(char command[]){
+    char *args[MAXSIZE];  // Array to store arguments
+
+    char *token = strtok(command, " "); // Initialize token inside the loop of  child process;
+    int argument_index = 0; // Reset argument_index
+
+    while (token != NULL) {
+        args[argument_index++] = token;
+        token = strtok(NULL, " ");
+    }
+    args[argument_index] = NULL;  // The last element must be NULL for execvp
+
+    // Execute the command with its arguments
+    execvp(args[0], args);
+}*/
 
 
 int main(void) {
@@ -68,18 +78,8 @@ int main(void) {
         pid_t ret = fork();
 
         if (ret == 0) {// Child process code
-            token = strtok(command, " "); // Initialize token inside the loop
-            argument_index = 0; // Reset argument_index
 
-            while (token != NULL) {
-                args[argument_index++] = token;
-                token = strtok(NULL, " ");
-            }
-            args[argument_index] = NULL;  // The last element must be NULL for execvp
-
-            // Execute the command with its arguments
-            execvp(args[0], args);
-
+            exec_complex_command(command);
             // If execvp fails, print an error message
             write(STDOUT_FILENO, error_msg, strlen(error_msg));
             exit(EXIT_FAILURE);

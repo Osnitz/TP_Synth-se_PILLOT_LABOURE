@@ -1,11 +1,5 @@
 #include "function.h"
 
-void welcome() {
-    write(STDOUT_FILENO, welcome_msg, strlen(welcome_msg));
-    write(STDOUT_FILENO, exit_instruction, strlen(exit_instruction));
-    write(STDOUT_FILENO, msg_enseash, strlen(msg_enseash));
-}
-
 int main(void) {
     char command[MAXSIZE];
     int numberOfChar;
@@ -14,7 +8,6 @@ int main(void) {
     char buff_time[MAXSIZE];
 
     struct timespec timeStart, timeEnd;
-
 
     welcome();
 
