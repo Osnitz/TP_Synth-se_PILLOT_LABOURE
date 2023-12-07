@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <time.h>
+#include <fcntl.h>
 // Define
 
 #define welcome_msg "Bienvenue dans le Shell ENSEA.\n"
@@ -22,3 +23,4 @@
 void welcome();
 void display_execTime_exitCode_prompt(int status, char *buff_exit,char *buff_time,struct timespec start, struct timespec end);
 void exec_complex_command(char command[]);
+void exec_complex_command_redirection(char command[]);

@@ -1,6 +1,6 @@
 #include "function.h"
 
-/*void exec_complex_command(char command[]) {
+/*void exec_complex_command_redirection(char command[]) {
     char *args[MAXSIZE];  // Array to store arguments
 
     char *token = strtok(command, " "); // Initialize token inside the loop of the child process;
@@ -11,6 +11,45 @@
         token = strtok(NULL, " ");
     }
     args[argument_index] = NULL;  // The last element must be NULL for execvp
+
+    // Search for input and output redirection symbols
+    for (int i = 0; args[i] != NULL; ++i) {
+        if (strcmp(args[i], "<") == 0) {
+            // Input redirection
+            int fdIn = open(args[i + 1], O_RDONLY);
+            if (fdIn == -1) {
+                perror("open");
+                exit(EXIT_FAILURE);
+            }
+            if (dup2(fdIn, STDIN_FILENO) == -1) {
+                perror("dup2");
+                exit(EXIT_FAILURE);
+            }
+            close(fdIn);
+
+            // Remove '<' and the filename from args
+            for (int j = i; args[j] != NULL; ++j) {
+                args[j] = args[j + 2];
+            }
+        } else if (strcmp(args[i], ">") == 0) {
+            // Output redirection
+            int fdOut = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0666);
+            if (fdOut == -1) {
+                perror("open");
+                exit(EXIT_FAILURE);
+            }
+            if (dup2(fdOut, STDOUT_FILENO) == -1) {
+                perror("dup2");
+                exit(EXIT_FAILURE);
+            }
+            close(fdOut);
+
+            // Remove '>' and the filename from args
+            for (int j = i; args[j] != NULL; ++j) {
+                args[j] = args[j + 2];
+            }
+        }
+    }
 
     // Execute the command with its arguments
     execvp(args[0], args);
@@ -25,10 +64,6 @@ int main(void) {
     int status;
     char buff_exit[MAXSIZE];
     char buff_time[MAXSIZE];
-    char *token;
-    char *args[MAXSIZE];  // Array to store arguments
-    int argument_index;
-
     struct timespec timeStart, timeEnd;
 
     welcome();
@@ -51,7 +86,7 @@ int main(void) {
             break;
         }
 
-        // exit when user types ctrl+D
+        // exit when user type ctrl+D
         if (numberOfChar == 0 || (numberOfChar == 1 && command[0] == '\n')) {
             if (write(STDOUT_FILENO, "Goodbye!\n", strlen("Goodbye!\n")) == -1) {
                 perror("write");
@@ -69,10 +104,12 @@ int main(void) {
         }
 
         if (ret == 0) {// Child process code
-            exec_complex_command(command);
+            exec_complex_command_redirection(command);
+
             // If execvp fails, print an error message
             write(STDOUT_FILENO, error_msg, strlen(error_msg));
             exit(EXIT_FAILURE);
+
         } else {
             // Parent process code
             if (wait(&status) == -1) {

@@ -10,27 +10,36 @@ int main(void) {
     while (1) {
         // Read user input
         numberOfChar = read(STDIN_FILENO, command, MAXSIZE);
+        if (numberOfChar == -1) {
+            perror("read");
+            exit(EXIT_FAILURE);
+        }
         command[numberOfChar - 1] = '\0';
 
-        if (strlen(command) == 0) {
-            write(STDOUT_FILENO, empty_msg, strlen(empty_msg));
-            write(STDOUT_FILENO, msg_enseash, strlen(msg_enseash));
-            continue;
-        }
         // Exit if the user types 'exit'
         if (strcmp(command, "exit") == 0) {
-            write(STDOUT_FILENO, exit_msg, strlen(exit_msg));
+            if (write(STDOUT_FILENO, exit_msg, strlen(exit_msg)) == -1) {
+                perror("write");
+                exit(EXIT_FAILURE);
+            }
             break;
         }
 
         pid_t ret = fork();
+
+        if (ret == -1) {
+            perror("fork");
+            exit(EXIT_FAILURE);
+        }
 
         if (ret == 0) {
             // Child process code
             execlp(command, command, NULL);
 
             // If execlp fails, print an error message
-            write(STDOUT_FILENO, error_msg, strlen(error_msg));
+            if (write(STDOUT_FILENO, error_msg, strlen(error_msg)) == -1) {
+                perror("write");
+            }
             exit(EXIT_FAILURE);
         } else {
             // Parent process code
@@ -38,11 +47,19 @@ int main(void) {
 
             // Check if the process terminated normally
             if (WIFEXITED(status)) {
-                write(STDOUT_FILENO, msg_enseash, strlen(msg_enseash));
-            } else {
-                write(STDOUT_FILENO, "Child process did not terminate normally.\n", strlen("Child process did not terminate normally.\n"));
+                // Display information about the exit status
+                if (write(STDOUT_FILENO, msg_enseash, strlen(msg_enseash)) == -1) {
+                    perror("write");
+                    exit(EXIT_FAILURE);
+                }
+            } else if (WIFSIGNALED(status)) {
+                // Child process terminated by a signal
+                if (write(STDOUT_FILENO, "Child process terminated by a signal.\n", strlen("Child process terminated by a signal.\n")) == -1) {
+                    perror("write");
+                    exit(EXIT_FAILURE);
+                }
             }
         }
     }
-    return 0 ;
+    return 0;
 }
