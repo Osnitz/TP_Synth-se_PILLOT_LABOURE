@@ -47,7 +47,6 @@ int main(void) {
 
             // Check if the process terminated normally
             if (WIFEXITED(status)) {
-                // Display information about the exit status
                 if (write(STDOUT_FILENO, msg_enseash, strlen(msg_enseash)) == -1) {
                     perror("write");
                     exit(EXIT_FAILURE);
@@ -58,6 +57,7 @@ int main(void) {
                     perror("write");
                     exit(EXIT_FAILURE);
                 }
+                write(STDOUT_FILENO, msg_enseash, strlen(msg_enseash));
             }
         }
     }

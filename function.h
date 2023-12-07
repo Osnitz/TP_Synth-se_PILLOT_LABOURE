@@ -24,3 +24,4 @@ void welcome();
 void display_execTime_exitCode_prompt(int status, char *buff_exit,char *buff_time,struct timespec start, struct timespec end);
 void exec_complex_command(char command[]);
 void exec_complex_command_redirection(char command[]);
+void exec_complex_command_pipe(char command[]);
