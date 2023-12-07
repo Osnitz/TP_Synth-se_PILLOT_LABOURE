@@ -25,7 +25,7 @@ int main(void) {
         }
 
         // exit when user type ctrl+D
-        if (numberOfChar == 0 ) {
+        if (numberOfChar == 0) {
             write(STDOUT_FILENO, "\nGoodbye!\n", strlen("\nGoodbye!\n"));
             break;
         }

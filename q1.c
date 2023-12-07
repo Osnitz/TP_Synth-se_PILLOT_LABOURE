@@ -13,7 +13,7 @@ int main(void) {
     while (1) {
         // Read user input
         numberOfChar = read(STDIN_FILENO, command, MAXSIZE);
-        command[numberOfChar - 1] = '\0';
+        command[numberOfChar - 1] = '\0'; //we replace "\n" by "\0" to delimit the command
 
         // Exit if the user types 'exit'
         if (strcmp(command, "exit") == 0) {

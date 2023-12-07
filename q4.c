@@ -10,7 +10,7 @@ int main(void) {
     char command[MAXSIZE];
     int numberOfChar;
     int status;
-    char buff[MAXSIZE];
+    char buff_exit[MAXSIZE];
 
     welcome();
 
@@ -46,14 +46,14 @@ int main(void) {
 
             // Check if the process terminated normally
             if (WIFEXITED(status)) {
-                sprintf(buff,"[Code exit : %d] ", WEXITSTATUS(status));
+                sprintf(buff_exit,"[Code exit : %d] ", WEXITSTATUS(status));
                 write(STDOUT_FILENO,ensea, strlen(ensea));
-                write(STDOUT_FILENO, buff, strlen(buff));
+                write(STDOUT_FILENO, buff_exit, strlen(buff_exit));
                 write(STDOUT_FILENO, percent, strlen(percent));
             } else if (WIFSIGNALED(status)){
-                sprintf(buff,"[Sign : %d] ", WEXITSTATUS(status));
+                sprintf(buff_exit,"[Sign : %d] ", WEXITSTATUS(status));
                 write(STDOUT_FILENO,ensea, strlen(ensea));
-                write(STDOUT_FILENO, buff, strlen(buff));
+                write(STDOUT_FILENO, buff_exit, strlen(buff_exit));
                 write(STDOUT_FILENO, percent, strlen(percent));
             }
         }

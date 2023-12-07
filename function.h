@@ -15,8 +15,9 @@
 #define error_msg "invalid command\n"
 #define empty_msg "empty command\n"
 #define ensea "ensea"
-#define percent "% "
+#define percent " % "
 #define MAXSIZE 1024
 
 // Function
 void welcome();
+void display_time_and_exitCode(int status, char *buff_exit,char *buff_time);
