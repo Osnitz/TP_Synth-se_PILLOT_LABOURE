@@ -8,6 +8,7 @@
 
     while (token != NULL) {
         args[argument_index++] = token;
+        // strtok call with NULL argument means that we continue with the same char
         token = strtok(NULL, " ");
     }
     args[argument_index] = NULL;  // The last element must be NULL for execvp
